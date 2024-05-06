@@ -1,1 +1,32 @@
-spring.application.name=w2m
+server:
+  port: 3000
+  error:
+    include-message: always
+
+spring:
+  application:
+    name: w2m
+  datasource:
+    url: jdbc:h2:file:./src/main/resources/db/W2mTaskDb
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+    batch:
+      jdbc:
+        initialize-schema: always
+
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.H2Dialect
+#    defer-datasource-initialization: true
+
+  sql:
+    init:
+      mode: always
