@@ -5,7 +5,7 @@ server:
 
 spring:
   application:
-    name: w2m
+    name: World 2 Meet
   datasource:
     url: jdbc:h2:file:./src/main/resources/db/W2mTaskDb
     driverClassName: org.h2.Driver
@@ -30,3 +30,13 @@ spring:
   sql:
     init:
       mode: always
+
+swagger:
+  application-url: http://localhost:${server.port}
+  title: ${spring.application.name}
+  version: 0.1.0
+  application-description: Documentation about the Spaceship service endpoints
+
+comms:
+  api:
+    api-key: 630eff62c08ba870e88cf7c0
