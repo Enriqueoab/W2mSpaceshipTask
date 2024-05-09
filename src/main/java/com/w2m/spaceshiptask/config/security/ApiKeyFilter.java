@@ -26,7 +26,6 @@ public class ApiKeyFilter extends GenericFilterBean {
         String apiKey = request.getHeader(API_KEY);
 
         if (apiKey != null && apiKey.equals(userApiKey)) {
-
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
 
