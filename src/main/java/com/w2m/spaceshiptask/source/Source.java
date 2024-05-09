@@ -25,6 +25,9 @@ public class Source {
     @OneToMany(mappedBy = "source", cascade = CascadeType.REMOVE)
     private Set<Spaceship> spaceships;
 
+    public Source() {
+    }
+
     public Source(int year, String name, SourceType type) {
         this.premiereYear = year;
         this.name = name;
@@ -37,6 +40,10 @@ public class Source {
 
     public void setPremiereYear(int premiereYear) {
         this.premiereYear = premiereYear;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {

@@ -7,6 +7,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 
 @Configuration
@@ -24,9 +25,9 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
-        http.authorizeHttpRequests(
-                        auth -> auth.anyRequest().authenticated()
+        // csrf().disable() as the requests won't come from a browser
+        http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(
+                        auth -> auth.anyRequest().permitAll()
                 )
                 .addFilterBefore(new ApiKeyFilter(apiKey), BasicAuthenticationFilter.class);
 

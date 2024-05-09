@@ -25,6 +25,9 @@ public class Spaceship {
 
     private String imageUrl;
 
+    public Spaceship() {
+    }
+
     public Spaceship(String name, Source source, String imageUrl) {
         this.name = name;
         this.source = source;
@@ -41,6 +44,10 @@ public class Spaceship {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
