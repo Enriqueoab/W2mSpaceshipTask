@@ -1,12 +1,15 @@
 package com.w2m.spaceshiptask.spaceship.service;
 
 import com.w2m.spaceshiptask.spaceship.Spaceship;
+import com.w2m.spaceshiptask.utils.exception.EmptyListReturnException;
 import com.w2m.spaceshiptask.utils.exception.NotExpectedResultException;
 import com.w2m.spaceshiptask.utils.exception.NotFoundException;
 import com.w2m.spaceshiptask.utils.form.SpaceshipForm;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+
+import java.util.List;
 
 public interface SpaceshipService {
 
@@ -20,6 +23,6 @@ public interface SpaceshipService {
 
     Spaceship updateSpaceship(Long id, SpaceshipForm SpaceshipForm) throws NotFoundException;
 
-    Page<Spaceship> findByName(String name, Pageable pageable);
+    List<Spaceship> findByName(String name, Pageable pageable) throws EmptyListReturnException;
 
 }

@@ -14,8 +14,8 @@ public class SpaceshipForm {
 
     private String imageUrl;
 
-    @Min(value = 1888, message = "premiereYear must be greater than 1888", groups = { SpaceshipUpdateForm.class, SpaceshipCreateForm.class })
-    @Max(value = 9999, message = "premiereYear must be less than 9999", groups = { SpaceshipUpdateForm.class, SpaceshipCreateForm.class })
+    @Min(value = 1888, message = "premiereYear must be greater than 1888", groups = { SpaceshipCreateForm.class })
+    @Max(value = 9999, message = "premiereYear must be less than 9999", groups = { SpaceshipCreateForm.class })
     @NotNull(groups = { SpaceshipCreateForm.class })
     private int premiereYear;
 

@@ -4,6 +4,7 @@ import com.w2m.spaceshiptask.source.Source;
 import com.w2m.spaceshiptask.source.repository.SourceRepository;
 import com.w2m.spaceshiptask.utils.exception.NotFoundException;
 import com.w2m.spaceshiptask.utils.exception.messages.ExceptionMessages;
+import com.w2m.spaceshiptask.utils.form.SourceUpdateForm;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,13 +24,16 @@ public class SourceServiceImpl implements SourceService {
 
     @Override
     @Transactional
-    public Source updateSource(Long id, Source source) throws NotFoundException {
+    public Source updateSource(Long id, SourceUpdateForm sourceForm) throws NotFoundException {
 
         var savedSource = findById(id);
 
-        savedSource.setName(source.getName());
-        savedSource.setPremiereYear(source.getPremiereYear());
-        savedSource.setType(source.getType());
+        savedSource.setName(sourceForm.getName() != null ? sourceForm.getName() : savedSource.getName());
+
+        savedSource.setPremiereYear(sourceForm.getPremiereYear() != null ? sourceForm.getPremiereYear() :
+                                                                           savedSource.getPremiereYear());
+
+        savedSource.setType(sourceForm.getType() != null ? sourceForm.getType() : savedSource.getType());
 
         return sourceRepo.save(savedSource);
     }

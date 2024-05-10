@@ -5,7 +5,7 @@ public enum ExceptionMessages {
     SPACESHIP_NOT_FOUND("The spaceship was not found"),
     SOURCE_NOT_FOUND("No source found"),
     REMOVE_SPACESHIP_ERROR("We were unable to delete the spaceship"),
-    RESOURCE_NOT_FOUND("The requested resource was not found."),
+    REQUEST_RETURN_EMPTY("The requested return no results."),
     UNAUTHORIZED_ACCESS("Unauthorized access to the resource."),
     SERVER_ERROR("An unexpected error occurred on the server.");
 
