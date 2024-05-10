@@ -20,7 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.w2m.spaceshiptask.spaceship.service.SpaceshipService;
 import com.w2m.spaceshiptask.utils.exception.NotFoundException;
+import com.w2m.spaceshiptask.utils.exception.EmptyListReturnException;
 import com.w2m.spaceshiptask.utils.exception.NotExpectedResultException;
+
+import java.util.List;
 
 @Validated
 @RestController
@@ -54,7 +57,7 @@ public class SpaceshipController {
 
     @Operation(summary = "Find Spaceship by name")
     @GetMapping(path = "/byName")
-    public Page<Spaceship> findByName(@RequestParam String name, Pageable pageable) {
+    public List<Spaceship> findByName(@RequestParam String name, Pageable pageable) throws EmptyListReturnException {
         return spaceshipService.findByName(name, pageable);
     }
 

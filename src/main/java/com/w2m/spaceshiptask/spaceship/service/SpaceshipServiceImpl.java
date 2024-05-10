@@ -3,6 +3,7 @@ package com.w2m.spaceshiptask.spaceship.service;
 import com.w2m.spaceshiptask.source.Source;
 import com.w2m.spaceshiptask.spaceship.Spaceship;
 import com.w2m.spaceshiptask.spaceship.repository.SpaceshipRepository;
+import com.w2m.spaceshiptask.utils.exception.EmptyListReturnException;
 import com.w2m.spaceshiptask.utils.exception.NotExpectedResultException;
 import com.w2m.spaceshiptask.utils.exception.NotFoundException;
 import com.w2m.spaceshiptask.utils.exception.messages.ExceptionMessages;
@@ -12,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class SpaceshipServiceImpl implements SpaceshipService {
@@ -65,8 +68,12 @@ public class SpaceshipServiceImpl implements SpaceshipService {
     }
 
     @Override
-    public Page<Spaceship> findByName(String name, Pageable pageable) {
-        return spaceshipRepo.findByName(name, pageable);
+    public List<Spaceship> findByName(String name, Pageable pageable) throws EmptyListReturnException {
+        var ships = spaceshipRepo.findByNameContainingIgnoreCase(name);
+        if (ships.isEmpty()) {
+            throw new EmptyListReturnException(ExceptionMessages.REQUEST_RETURN_EMPTY.getMessage());
+        }
+        return ships;
     }
 
     private Spaceship buildSpaceship(SpaceshipForm spaceshipForm) {
