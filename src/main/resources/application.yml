@@ -25,6 +25,9 @@ spring:
     init:
       mode: always
 
+  rabbitmq:
+    addresses: localhost:5672
+
 swagger:
   application-url: http://localhost:${server.port}
   title: ${spring.application.name}
@@ -34,3 +37,4 @@ swagger:
 comms:
   api:
     api-key: 630eff62c08ba870e88cf7c0
+

@@ -6,6 +6,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -16,4 +17,7 @@ public interface SpaceshipRepository extends JpaRepository<Spaceship, Long> {
 
     @Cacheable("spaceships")
     Page<Spaceship> findAll(Pageable pageable);
+
+    @Query(value="SELECT s.imageUrl FROM Spaceship s")
+    List<String> getAllByImageUrlNotNull();
 }
