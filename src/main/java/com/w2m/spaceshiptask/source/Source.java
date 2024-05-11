@@ -7,10 +7,17 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.cache.annotation.Cacheable;
+
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-public class Source {
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class Source implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

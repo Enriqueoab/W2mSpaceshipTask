@@ -8,10 +8,16 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.cache.annotation.Cacheable;
+
+import java.io.Serializable;
 
 @Entity
-public class Spaceship {
-
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class Spaceship implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
