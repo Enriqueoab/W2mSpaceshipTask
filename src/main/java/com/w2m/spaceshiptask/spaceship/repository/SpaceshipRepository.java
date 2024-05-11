@@ -1,14 +1,13 @@
 package com.w2m.spaceshiptask.spaceship.repository;
 
-import com.w2m.spaceshiptask.spaceship.Spaceship;
+import java.util.List;
 import io.micrometer.common.lang.NonNullApi;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.w2m.spaceshiptask.spaceship.Spaceship;
 import org.springframework.data.jpa.repository.Query;
-
-import java.util.List;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 @NonNullApi
 public interface SpaceshipRepository extends JpaRepository<Spaceship, Long> {

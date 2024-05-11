@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  w2m-app:
+    image: w2m-spaceship-task:0.0.1-SNAPSHOT
+    ports:
+      - "3000:3000"
+    environment:
+     - SPRING_PROFILES_ACTIVE=default
+    volumes:
+      - ./data:/workspace/data
+    depends_on:
+      - h2-database
+      - rabbitmq
+    networks:
+      - w2m-network
+
+  h2-database:
+    image: "buildo/h2database"
+    ports:
+      - "1521:1521"
+      - "81:81" # H2 Console
+    volumes:
+      - ./data:/data
+    environment:
+      - H2_OPTIONS=-ifNotExists
+    networks:
+      - w2m-network
+
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    container_name: rabbitmq-cont
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "guest"
+    volumes:
+      - "./rabbitmq_data:/var/lib/rabbitmq"
+
+networks:
+  w2m-network:
+    driver: bridge
