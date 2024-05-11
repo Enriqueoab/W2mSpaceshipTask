@@ -1,5 +1,6 @@
 package com.w2m.spaceshiptask.spaceship.service;
 
+import com.w2m.spaceshiptask.config.rabbit.CoreConstants;
 import com.w2m.spaceshiptask.source.Source;
 import com.w2m.spaceshiptask.spaceship.Spaceship;
 import com.w2m.spaceshiptask.spaceship.repository.SpaceshipRepository;
@@ -8,20 +9,22 @@ import com.w2m.spaceshiptask.utils.exception.NotExpectedResultException;
 import com.w2m.spaceshiptask.utils.exception.NotFoundException;
 import com.w2m.spaceshiptask.utils.exception.messages.ExceptionMessages;
 import com.w2m.spaceshiptask.utils.form.SpaceshipForm;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @Service
 public class SpaceshipServiceImpl implements SpaceshipService {
 
+    private final RabbitTemplate rabbitTemplate;
     private final SpaceshipRepository spaceshipRepo;
 
-    public SpaceshipServiceImpl(SpaceshipRepository spaceshipRepo) {
+    public SpaceshipServiceImpl(RabbitTemplate rabbitTemplate, SpaceshipRepository spaceshipRepo) {
+        this.rabbitTemplate = rabbitTemplate;
         this.spaceshipRepo = spaceshipRepo;
     }
 
@@ -45,6 +48,17 @@ public class SpaceshipServiceImpl implements SpaceshipService {
     @Override
     public Page<Spaceship> getAll(Pageable pageable) {
         return spaceshipRepo.findAll(pageable);
+    }
+
+    @Override
+    public List<String> showAllSpaceshipsRequest() {
+//        TODO: Create @Aspect to send a log saying request sent
+        var urls = spaceshipRepo.getAllByImageUrlNotNull();
+
+        rabbitTemplate.convertAndSend(CoreConstants.RABBIT_EXCHANGE_NAME,
+                CoreConstants.RABBIT_SHOW_SPACESHIP_REQUEST_ROUTING_KEY, urls);
+
+        return urls;
     }
 
     @Override

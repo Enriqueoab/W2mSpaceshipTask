@@ -8,6 +8,7 @@ import com.w2m.spaceshiptask.utils.form.SpaceshipForm;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -25,4 +26,5 @@ public interface SpaceshipService {
 
     List<Spaceship> findByName(String name, Pageable pageable) throws EmptyListReturnException;
 
+    List<String> showAllSpaceshipsRequest();
 }

@@ -1,6 +1,7 @@
 package com.w2m.spaceshiptask.spaceship.Controller;
 
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.data.domain.Page;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -41,6 +42,12 @@ public class SpaceshipController {
     @GetMapping(path = "/all")
     public Page<Spaceship> getAll(Pageable pageable) {
         return spaceshipService.getAll(pageable);
+    }
+
+    @Operation(summary = "Show all Spaceship images")
+    @GetMapping(path = "/showSpaceships")
+    public List<String> showAllSpaceships() {
+        return spaceshipService.showAllSpaceshipsRequest();
     }
 
     @Operation(summary = "Get Spaceship by id")
