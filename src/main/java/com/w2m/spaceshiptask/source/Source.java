@@ -1,18 +1,17 @@
 package com.w2m.spaceshiptask.source;
 
-import com.w2m.spaceshiptask.spaceship.Spaceship;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import java.util.Set;
+import java.io.Serializable;
 import jakarta.persistence.Id;
+import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
 import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import com.w2m.spaceshiptask.spaceship.Spaceship;
 import org.springframework.cache.annotation.Cacheable;
-
-import java.io.Serializable;
-import java.util.Set;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
 @Cacheable

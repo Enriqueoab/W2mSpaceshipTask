@@ -1,16 +1,14 @@
 package com.w2m.spaceshiptask.spaceship.service;
 
-import com.w2m.spaceshiptask.spaceship.Spaceship;
-import com.w2m.spaceshiptask.utils.exception.EmptyListReturnException;
-import com.w2m.spaceshiptask.utils.exception.NotExpectedResultException;
-import com.w2m.spaceshiptask.utils.exception.NotFoundException;
-import com.w2m.spaceshiptask.utils.form.SpaceshipForm;
+import java.util.List;
+import org.springframework.http.HttpStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-
-import java.util.List;
+import com.w2m.spaceshiptask.spaceship.Spaceship;
+import com.w2m.spaceshiptask.utils.form.SpaceshipForm;
+import com.w2m.spaceshiptask.utils.exception.NotFoundException;
+import com.w2m.spaceshiptask.utils.exception.EmptyListReturnException;
+import com.w2m.spaceshiptask.utils.exception.NotExpectedResultException;
 
 public interface SpaceshipService {
 

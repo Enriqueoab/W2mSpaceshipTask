@@ -1,7 +1,7 @@
 package com.w2m.spaceshiptask.spaceship.Controller;
 
+import java.util.List;
 import jakarta.validation.Valid;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.data.domain.Page;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,8 +23,6 @@ import com.w2m.spaceshiptask.spaceship.service.SpaceshipService;
 import com.w2m.spaceshiptask.utils.exception.NotFoundException;
 import com.w2m.spaceshiptask.utils.exception.EmptyListReturnException;
 import com.w2m.spaceshiptask.utils.exception.NotExpectedResultException;
-
-import java.util.List;
 
 @Validated
 @RestController
