@@ -1,6 +1,8 @@
 package com.w2m.spaceshiptask.spaceship.service;
 
 import java.util.List;
+
+import com.w2m.spaceshiptask.spaceship.SpaceshipImgDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,5 +26,5 @@ public interface SpaceshipService {
 
     List<Spaceship> findByName(String name, Pageable pageable) throws EmptyListReturnException;
 
-    List<String> showAllSpaceshipsRequest();
+    List<SpaceshipImgDto> showAllSpaceshipsRequest();
 }

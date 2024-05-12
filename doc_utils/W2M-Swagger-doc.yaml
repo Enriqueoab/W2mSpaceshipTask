@@ -115,7 +115,7 @@ paths:
               schema:
                 type: array
                 items:
-                  type: string
+                  $ref: '#/components/schemas/SpaceshipImgDto'
   /spaceship/byName:
     get:
       tags:
@@ -265,8 +265,7 @@ components:
           minLength: 3
           type: string
           description: Spaceship reference, name, model, description
-          example: https://shorturl.at/kpNQT
-          default: https://shorturl.at/kpNQT
+          example: Death star
         imageUrl:
           maxLength: 255
           minLength: 10
@@ -291,12 +290,13 @@ components:
           type: string
           description: Reference to where the Spaceship was seen
           example: SERIES
+          default: FILM
           enum:
             - SERIES
             - FILM
             - FILM
             - SERIES
-          default: FILM
+      description: Form to Create or Update the Spaceship entity
     Source:
       type: object
       properties:
@@ -350,6 +350,20 @@ components:
             - FILM
             - FILM
             - SERIES
+      description: Form to Update the Source entity
+    SpaceshipImgDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Spaceship reference, name, model, description
+          example: N-1 Starfighter
+        imageUrl:
+          type: string
+          description: Spaceship image URL
+          example: https://shorturl.at/jowO4
+          default: https://shorturl.at/jowO4
+      description: Dto to send some Spaceship info as message request
     Pageable:
       type: object
       properties:
@@ -374,9 +388,8 @@ components:
         totalElements:
           type: integer
           format: int64
-        numberOfElements:
-          type: integer
-          format: int32
+        pageable:
+          $ref: '#/components/schemas/PageableObject'
         size:
           type: integer
           format: int32
@@ -391,17 +404,24 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SortObject'
+        numberOfElements:
+          type: integer
+          format: int32
         first:
           type: boolean
         last:
           type: boolean
-        pageable:
-          $ref: '#/components/schemas/PageableObject'
         empty:
           type: boolean
     PageableObject:
       type: object
       properties:
+        pageNumber:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
         offset:
           type: integer
           format: int64
@@ -413,12 +433,6 @@ components:
           type: boolean
         unpaged:
           type: boolean
-        pageSize:
-          type: integer
-          format: int32
-        pageNumber:
-          type: integer
-          format: int32
     SortObject:
       type: object
       properties:

@@ -17,6 +17,4 @@ public interface SpaceshipRepository extends JpaRepository<Spaceship, Long> {
     @Cacheable("spaceships")
     Page<Spaceship> findAll(Pageable pageable);
 
-    @Query(value="SELECT s.imageUrl FROM Spaceship s")
-    List<String> getAllByImageUrlNotNull();
 }

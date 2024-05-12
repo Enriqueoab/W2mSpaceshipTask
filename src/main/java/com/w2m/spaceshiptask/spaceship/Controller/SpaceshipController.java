@@ -1,6 +1,8 @@
 package com.w2m.spaceshiptask.spaceship.Controller;
 
 import java.util.List;
+
+import com.w2m.spaceshiptask.spaceship.SpaceshipImgDto;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.data.domain.Page;
@@ -44,7 +46,7 @@ public class SpaceshipController {
 
     @Operation(summary = "Send message request to show all Spaceship images")
     @GetMapping(path = "/showSpaceships")
-    public List<String> showAllSpaceships() {
+    public List<SpaceshipImgDto> showAllSpaceships() {
         return spaceshipService.showAllSpaceshipsRequest();
     }
 

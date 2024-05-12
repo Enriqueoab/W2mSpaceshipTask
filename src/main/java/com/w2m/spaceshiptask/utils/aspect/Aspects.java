@@ -1,5 +1,6 @@
 package com.w2m.spaceshiptask.utils.aspect;
 
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,12 @@ public class Aspects {
             System.err.println("WARNING: Attempt to find spaceship with an invalid id: " + id);
 
         }
+    }
+
+    @After("execution(* com.w2m.spaceshiptask.spaceship.service.SpaceshipService.showAllSpaceshipsRequest())")
+    public void RequestMessageSent() {
+
+        System.out.println("Producer Request sent to show Spaceship images");
     }
 
 }
