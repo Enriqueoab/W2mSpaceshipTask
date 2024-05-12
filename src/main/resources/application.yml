@@ -26,7 +26,11 @@ spring:
       mode: always
 
   rabbitmq:
-    addresses: localhost:5672
+    host: localhost
+    port: 5672
+    listener:
+      simple:
+        default-requeue-rejected: false
 
 swagger:
   application-url: http://localhost:${server.port}

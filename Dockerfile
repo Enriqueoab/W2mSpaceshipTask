@@ -12,7 +12,7 @@ FROM openjdk:21-jdk
 WORKDIR /app
 
 # Copy the JAR file from the builder stage to the container.
-COPY --from=builder target/w2m-0.0.1-SNAPSHOT.jar /app/w2m.jar
+COPY --from=builder target/*.jar /app/w2m.jar
 
 # Expose port 3000 for the Spring Boot application.
 EXPOSE 3000
