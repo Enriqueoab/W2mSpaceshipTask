@@ -75,6 +75,7 @@ public class SpaceshipServiceImpl implements SpaceshipService {
         savedSpaceship.setName(SpaceshipForm.getSpaceshipName() != null ? SpaceshipForm.getSpaceshipName() :
                                                                           savedSpaceship.getName());
 
+
         savedSpaceship.setImageUrl(SpaceshipForm.getImageUrl() != null ? SpaceshipForm.getImageUrl() :
                                                                          savedSpaceship.getImageUrl());
 
