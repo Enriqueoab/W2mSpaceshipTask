@@ -1,6 +1,8 @@
 package com.w2m.spaceshiptask.spaceship.service;
 
 import java.util.List;
+
+import com.w2m.spaceshiptask.spaceship.SpaceshipImgDto;
 import org.springframework.http.HttpStatus;
 import com.w2m.spaceshiptask.source.Source;
 import org.springframework.data.domain.Page;
@@ -51,14 +53,15 @@ public class SpaceshipServiceImpl implements SpaceshipService {
     }
 
     @Override
-    public List<String> showAllSpaceshipsRequest() {
-//        TODO: Create @Aspect to send a log saying request sent
-        var urls = spaceshipRepo.getAllByImageUrlNotNull();
-
+    public List<SpaceshipImgDto> showAllSpaceshipsRequest() {
+        var spaceships = spaceshipRepo.findAll(Pageable.unpaged());
+        var spaceshipImgDtos = spaceships.stream()
+                .map(spaceship -> new SpaceshipImgDto(spaceship.getName(), spaceship.getImageUrl()))
+                .toList();
         rabbitTemplate.convertAndSend(CoreConstants.RABBIT_EXCHANGE_NAME,
-                CoreConstants.RABBIT_SHOW_SPACESHIP_REQUEST_ROUTING_KEY, urls);
+                CoreConstants.RABBIT_SHOW_SPACESHIP_REQUEST_ROUTING_KEY, spaceshipImgDtos);
 
-        return urls;
+        return spaceshipImgDtos;
     }
 
     @Override

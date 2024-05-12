@@ -64,7 +64,7 @@ JDBC URL:
 We only have to open Postman and import the file ```"Collections" tab > "Import" button```
 
 
-## 4. Endpoints - Documentation:
+## 4. Endpoints - Swagger Documentation:
 
 - The application has a Swagger dependency so, when the program is running, we can visit the url below for reference if needed
 

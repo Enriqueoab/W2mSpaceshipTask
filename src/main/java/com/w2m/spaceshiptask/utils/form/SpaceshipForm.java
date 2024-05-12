@@ -8,13 +8,13 @@ import jakarta.validation.constraints.NotBlank;
 import com.w2m.spaceshiptask.source.SourceType;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-
+@Schema(description = "Form to Create or Update the Spaceship entity")
 public class SpaceshipForm {
 
     public interface SpaceshipUpdateForm {}
     public interface SpaceshipCreateForm {}
 
-    @Schema(description = "Spaceship reference, name, model, description", example = "https://shorturl.at/kpNQT", defaultValue = "https://shorturl.at/kpNQT")
+    @Schema(description = "Spaceship reference, name, model, description", example = "Death star")
     @NotBlank(groups = { SpaceshipCreateForm.class })
     @Size(min = 3, max = 25, groups = { SpaceshipUpdateForm.class, SpaceshipCreateForm.class })
     private String spaceshipName;

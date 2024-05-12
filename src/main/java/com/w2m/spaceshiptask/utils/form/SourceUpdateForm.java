@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import com.w2m.spaceshiptask.source.SourceType;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(description = "Form to Update the Source entity")
 public class SourceUpdateForm {
 
     @Schema(description = "Film - series premiere year", example = "2001")
