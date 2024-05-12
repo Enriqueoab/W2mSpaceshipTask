@@ -42,7 +42,7 @@ public class SpaceshipController {
         return spaceshipService.getAll(pageable);
     }
 
-    @Operation(summary = "Show all Spaceship images")
+    @Operation(summary = "Send message request to show all Spaceship images")
     @GetMapping(path = "/showSpaceships")
     public List<String> showAllSpaceships() {
         return spaceshipService.showAllSpaceshipsRequest();
@@ -73,7 +73,7 @@ public class SpaceshipController {
         return spaceshipService.addNewSpaceship(spaceshipForm);
     }
 
-    @Operation(summary = "Update an already saved Spaceship record")
+    @Operation(summary = "Update a Spaceship record")
     @PutMapping(path = "/update/{id}")
     @Validated(SpaceshipForm.SpaceshipUpdateForm.class)
     public Spaceship updateSpaceship(@PathVariable Long id, @Valid @RequestBody SpaceshipForm spaceshipForm) throws NotFoundException {
