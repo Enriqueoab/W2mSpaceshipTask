@@ -1,56 +1,50 @@
 package com.w2m.spaceshiptask.spaceship.Controller;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.w2m.spaceshiptask.source.Source;
-import com.w2m.spaceshiptask.source.SourceType;
-import com.w2m.spaceshiptask.spaceship.Spaceship;
-import com.w2m.spaceshiptask.spaceship.repository.SpaceshipRepository;
-import com.w2m.spaceshiptask.spaceship.service.SpaceshipService;
-import com.w2m.spaceshiptask.spaceship.service.SpaceshipServiceImpl;
-import com.w2m.spaceshiptask.utils.exception.EmptyListReturnException;
-import com.w2m.spaceshiptask.utils.exception.NotFoundException;
-import com.w2m.spaceshiptask.utils.form.SpaceshipForm;
-
-import java.util.ArrayList;
 import java.util.List;
-
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import java.util.ArrayList;
 import org.mockito.Mockito;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.InjectMocks;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.TestInstance;
+import org.springframework.http.MediaType;
+import com.w2m.spaceshiptask.source.Source;
+import org.springframework.http.HttpStatus;
 import org.springframework.data.domain.Page;
+import com.w2m.spaceshiptask.source.SourceType;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.aot.DisabledInAotMode;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import com.w2m.spaceshiptask.spaceship.Spaceship;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.w2m.spaceshiptask.utils.form.SpaceshipForm;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import com.w2m.spaceshiptask.utils.exception.NotFoundException;
+import com.w2m.spaceshiptask.spaceship.service.SpaceshipService;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import com.w2m.spaceshiptask.spaceship.service.SpaceshipServiceImpl;
+import com.w2m.spaceshiptask.spaceship.repository.SpaceshipRepository;
+import com.w2m.spaceshiptask.utils.exception.EmptyListReturnException;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
-@ContextConfiguration(classes = {SpaceshipController.class})
-@ExtendWith(SpringExtension.class)
-@DisabledInAotMode
+@ExtendWith(MockitoExtension.class)
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class SpaceshipControllerTest {
-    @Autowired
+
+    @InjectMocks
     private SpaceshipController spaceshipController;
 
-    @MockBean
+    @Mock
     private SpaceshipService spaceshipService;
+
+    @Mock
+    private SpaceshipRepository spaceshipRepo;
 
     /**
      * Method under test: {@link SpaceshipController#getAll(Pageable)}
@@ -58,19 +52,15 @@ class SpaceshipControllerTest {
     @Test
     void testGetAll() {
 
-        // Arrange
-        SpaceshipRepository spaceshipRepo = mock(SpaceshipRepository.class);
         PageImpl<Spaceship> pageImpl = new PageImpl<>(new ArrayList<>());
-        when(spaceshipRepo.findAll(Mockito.<Pageable>any())).thenReturn(pageImpl);
+        Mockito.when(spaceshipRepo.findAll(Mockito.<Pageable>any())).thenReturn(pageImpl);
 
-        // Act
         Page<Spaceship> actualAll = (new SpaceshipController(new SpaceshipServiceImpl(new RabbitTemplate(), spaceshipRepo)))
                 .getAll(null);
 
-        // Assert
-        verify(spaceshipRepo).findAll(Mockito.<Pageable>any());
-        assertTrue(actualAll.toList().isEmpty());
-        assertSame(pageImpl, actualAll);
+        Mockito.verify(spaceshipRepo).findAll(Mockito.<Pageable>any());
+        Assertions.assertTrue(actualAll.toList().isEmpty());
+        Assertions.assertSame(pageImpl, actualAll);
     }
 
     /**
@@ -78,7 +68,7 @@ class SpaceshipControllerTest {
      */
     @Test
     void testFindById() throws Exception {
-        // Arrange
+
         Source source = new Source();
         source.setName("Name");
         source.setPremiereYear(1);
@@ -88,10 +78,9 @@ class SpaceshipControllerTest {
         spaceship.setImageUrl("https://example.org/example");
         spaceship.setName("Name");
         spaceship.setSource(source);
-        when(spaceshipService.findById(Mockito.<Long>any())).thenReturn(spaceship);
+        Mockito.when(spaceshipService.findById(Mockito.<Long>any())).thenReturn(spaceship);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/spaceship/{id}", 1L);
 
-        // Act and Assert
         MockMvcBuilders.standaloneSetup(spaceshipController)
                 .build()
                 .perform(requestBuilder)
@@ -108,16 +97,14 @@ class SpaceshipControllerTest {
      */
     @Test
     void testFindById2() throws Exception {
-        // Arrange
-        when(spaceshipService.findById(Mockito.<Long>any())).thenThrow(new NotFoundException("An error occurred"));
+
+        Mockito.when(spaceshipService.findById(Mockito.<Long>any())).thenThrow(new NotFoundException("An error occurred"));
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/spaceship/{id}", 1L);
 
-        // Act
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(spaceshipController)
                 .build()
                 .perform(requestBuilder);
 
-        // Assert
         actualPerformResult.andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
@@ -126,11 +113,10 @@ class SpaceshipControllerTest {
      */
     @Test
     void testRemoveSpaceship() throws Exception {
-        // Arrange
-        when(spaceshipService.removeSpaceship(Mockito.<Long>any())).thenReturn(HttpStatus.CONTINUE);
+
+        Mockito.when(spaceshipService.removeSpaceship(Mockito.<Long>any())).thenReturn(HttpStatus.CONTINUE);
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/spaceship/remove/{id}", 1L);
 
-        // Act and Assert
         MockMvcBuilders.standaloneSetup(spaceshipController)
                 .build()
                 .perform(requestBuilder)
@@ -144,16 +130,14 @@ class SpaceshipControllerTest {
      */
     @Test
     void testRemoveSpaceship2() throws Exception {
-        // Arrange
-        when(spaceshipService.removeSpaceship(Mockito.<Long>any())).thenThrow(new NotFoundException("An error occurred"));
+
+        Mockito.when(spaceshipService.removeSpaceship(Mockito.<Long>any())).thenThrow(new NotFoundException("An error occurred"));
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.delete("/spaceship/remove/{id}", 1L);
 
-        // Act
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(spaceshipController)
                 .build()
                 .perform(requestBuilder);
 
-        // Assert
         actualPerformResult.andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
@@ -163,7 +147,6 @@ class SpaceshipControllerTest {
     @Test
     void testFindByName() throws EmptyListReturnException {
 
-        // Arrange
         Source source = new Source();
         source.setName("Name");
         source.setPremiereYear(1);
@@ -176,17 +159,15 @@ class SpaceshipControllerTest {
 
         ArrayList<Spaceship> spaceshipList = new ArrayList<>();
         spaceshipList.add(spaceship);
-        SpaceshipRepository spaceshipRepo = mock(SpaceshipRepository.class);
-        when(spaceshipRepo.findByNameContainingIgnoreCase(Mockito.<String>any())).thenReturn(spaceshipList);
 
-        // Act
+        Mockito.when(spaceshipRepo.findByNameContainingIgnoreCase(Mockito.<String>any())).thenReturn(spaceshipList);
+
         List<Spaceship> actualFindByNameResult = (new SpaceshipController(
                 new SpaceshipServiceImpl(new RabbitTemplate(), spaceshipRepo))).findByName("Name", null);
 
-        // Assert
-        verify(spaceshipRepo).findByNameContainingIgnoreCase(eq("Name"));
-        assertEquals(1, actualFindByNameResult.size());
-        assertSame(spaceship, actualFindByNameResult.get(0));
+        Mockito.verify(spaceshipRepo).findByNameContainingIgnoreCase(ArgumentMatchers.eq("Name"));
+        Assertions.assertEquals(1, actualFindByNameResult.size());
+        Assertions.assertSame(spaceship, actualFindByNameResult.get(0));
     }
 
     /**
@@ -194,7 +175,7 @@ class SpaceshipControllerTest {
      */
     @Test
     void testAddNewSpaceship() throws Exception {
-        // Arrange
+
         Source source = new Source();
         source.setName("Name");
         source.setPremiereYear(1);
@@ -204,7 +185,7 @@ class SpaceshipControllerTest {
         spaceship.setImageUrl("https://example.org/example");
         spaceship.setName("Name");
         spaceship.setSource(source);
-        when(spaceshipService.addNewSpaceship(Mockito.<SpaceshipForm>any())).thenReturn(spaceship);
+        Mockito.when(spaceshipService.addNewSpaceship(Mockito.<SpaceshipForm>any())).thenReturn(spaceship);
         MockHttpServletRequestBuilder contentTypeResult = MockMvcRequestBuilders.post("/spaceship/save")
                 .contentType(MediaType.APPLICATION_JSON);
 
@@ -212,7 +193,6 @@ class SpaceshipControllerTest {
         MockHttpServletRequestBuilder requestBuilder = contentTypeResult
                 .content(objectMapper.writeValueAsString(new SpaceshipForm()));
 
-        // Act and Assert
         MockMvcBuilders.standaloneSetup(spaceshipController)
                 .build()
                 .perform(requestBuilder)
@@ -230,7 +210,7 @@ class SpaceshipControllerTest {
      */
     @Test
     void testUpdateSpaceship() throws Exception {
-        // Arrange
+
         Source source = new Source();
         source.setName("Name");
         source.setPremiereYear(1);
@@ -240,7 +220,7 @@ class SpaceshipControllerTest {
         spaceship.setImageUrl("https://example.org/example");
         spaceship.setName("Name");
         spaceship.setSource(source);
-        when(spaceshipService.updateSpaceship(Mockito.<Long>any(), Mockito.<SpaceshipForm>any())).thenReturn(spaceship);
+        Mockito.when(spaceshipService.updateSpaceship(Mockito.<Long>any(), Mockito.<SpaceshipForm>any())).thenReturn(spaceship);
         MockHttpServletRequestBuilder contentTypeResult = MockMvcRequestBuilders.put("/spaceship/update/{id}", 1L)
                 .contentType(MediaType.APPLICATION_JSON);
 
@@ -248,7 +228,6 @@ class SpaceshipControllerTest {
         MockHttpServletRequestBuilder requestBuilder = contentTypeResult
                 .content(objectMapper.writeValueAsString(new SpaceshipForm()));
 
-        // Act and Assert
         MockMvcBuilders.standaloneSetup(spaceshipController)
                 .build()
                 .perform(requestBuilder)
@@ -266,8 +245,8 @@ class SpaceshipControllerTest {
      */
     @Test
     void testUpdateSpaceship2() throws Exception {
-        // Arrange
-        when(spaceshipService.updateSpaceship(Mockito.<Long>any(), Mockito.<SpaceshipForm>any()))
+
+        Mockito.when(spaceshipService.updateSpaceship(Mockito.<Long>any(), Mockito.<SpaceshipForm>any()))
                 .thenThrow(new NotFoundException("An error occurred"));
         MockHttpServletRequestBuilder contentTypeResult = MockMvcRequestBuilders.put("/spaceship/update/{id}", 1L)
                 .contentType(MediaType.APPLICATION_JSON);
@@ -276,12 +255,10 @@ class SpaceshipControllerTest {
         MockHttpServletRequestBuilder requestBuilder = contentTypeResult
                 .content(objectMapper.writeValueAsString(new SpaceshipForm()));
 
-        // Act
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(spaceshipController)
                 .build()
                 .perform(requestBuilder);
 
-        // Assert
         actualPerformResult.andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
@@ -290,11 +267,10 @@ class SpaceshipControllerTest {
      */
     @Test
     void testShowAllSpaceships() throws Exception {
-        // Arrange
-        when(spaceshipService.showAllSpaceshipsRequest()).thenReturn(new ArrayList<>());
+
+        Mockito.when(spaceshipService.showAllSpaceshipsRequest()).thenReturn(new ArrayList<>());
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/spaceship/showSpaceships");
 
-        // Act and Assert
         MockMvcBuilders.standaloneSetup(spaceshipController)
                 .build()
                 .perform(requestBuilder)
