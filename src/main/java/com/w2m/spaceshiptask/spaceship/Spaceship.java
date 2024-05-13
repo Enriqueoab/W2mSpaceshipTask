@@ -66,4 +66,5 @@ public class Spaceship implements Serializable {
     public String getImageUrl() {
         return imageUrl;
     }
+
 }

@@ -21,6 +21,7 @@ public class SourceUpdateForm {
     @Schema(description = "Reference to where the Spaceship was seen", example = "SERIES", allowableValues = { "FILM", "SERIES"})
     private SourceType type;
 
+
     public Integer getPremiereYear() {
         return premiereYear;
     }
@@ -32,4 +33,13 @@ public class SourceUpdateForm {
     public SourceType getType() {
         return type;
     }
+
+    public SourceUpdateForm(int premiereYear, String name, SourceType type) {
+        this.premiereYear = premiereYear;
+        this.name = name;
+        this.type = type;
+    }
+
+    public SourceUpdateForm() { }
+
 }
