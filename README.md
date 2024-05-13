@@ -1,7 +1,8 @@
-# W2mSpaceshipTask
+# World 2 Meet Spaceship Task
 
 **Repository for World 2 Meet tech task by Enrique Barca** 
 
+[![es](https://img.shields.io/badge/lang-Español-blue.svg)](./README.es.md)
 
 ## 1. How to run the application and tests.
 
