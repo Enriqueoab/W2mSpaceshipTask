@@ -7,6 +7,7 @@ import org.mockito.Mockito;
 import org.mockito.InjectMocks;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
+import com.w2m.spaceshiptask.TestUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.http.MediaType;
@@ -35,7 +36,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-class SpaceshipControllerTest {
+class SpaceshipControllerTest extends TestUtils {
 
     @InjectMocks
     private SpaceshipController spaceshipController;
@@ -69,27 +70,17 @@ class SpaceshipControllerTest {
     @Test
     void testFindById() throws Exception {
 
-        Source source = new Source();
-        source.setName("Name");
-        source.setPremiereYear(1);
-        source.setType(SourceType.SERIES);
-
-        Spaceship spaceship = new Spaceship();
-        spaceship.setImageUrl("https://example.org/example");
-        spaceship.setName("Name");
-        spaceship.setSource(source);
         Mockito.when(spaceshipService.findById(Mockito.<Long>any())).thenReturn(spaceship);
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/spaceship/{id}", 1L);
 
         MockMvcBuilders.standaloneSetup(spaceshipController)
                 .build()
-                .perform(requestBuilder)
+                .perform(getRequestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
                 .andExpect(MockMvcResultMatchers.content()
-                        .string(
-                                "{\"id\":null,\"name\":\"Name\",\"source\":{\"id\":null,\"premiereYear\":1,\"name\":\"Name\",\"type\":\"SERIES\"},\"imageUrl"
-                                        + "\":\"https://example.org/example\"}"));
+                .string("{\"id\":null,\"name\":\"x-wing\"," +
+                        "\"source\":{\"id\":null,\"premiereYear\":1998,\"name\":\"Star Trek\",\"type\":\"SERIES\"}," +
+                        "\"imageUrl\":\"https://shorturl.at/jowO4\"}"));
     }
 
     /**
@@ -99,11 +90,10 @@ class SpaceshipControllerTest {
     void testFindById2() throws Exception {
 
         Mockito.when(spaceshipService.findById(Mockito.<Long>any())).thenThrow(new NotFoundException("An error occurred"));
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/spaceship/{id}", 1L);
 
         ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(spaceshipController)
                 .build()
-                .perform(requestBuilder);
+                .perform(getRequestBuilder);
 
         actualPerformResult.andExpect(MockMvcResultMatchers.status().isNotFound());
     }
@@ -269,11 +259,11 @@ class SpaceshipControllerTest {
     void testShowAllSpaceships() throws Exception {
 
         Mockito.when(spaceshipService.showAllSpaceshipsRequest()).thenReturn(new ArrayList<>());
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/spaceship/showSpaceships");
+        getRequestBuilder = MockMvcRequestBuilders.get("/spaceship/showSpaceships");
 
         MockMvcBuilders.standaloneSetup(spaceshipController)
                 .build()
-                .perform(requestBuilder)
+                .perform(getRequestBuilder)
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
                 .andExpect(MockMvcResultMatchers.content().string("[]"));

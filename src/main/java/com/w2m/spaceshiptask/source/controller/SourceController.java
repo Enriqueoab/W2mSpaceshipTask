@@ -28,7 +28,7 @@ public class SourceController {
 
     @Operation(summary = "Update an already saved Spaceship record")
     @PutMapping(path = "/update/{id}")
-    public Source updateSpaceship(@PathVariable Long id, @Valid @RequestBody SourceUpdateForm sourceForm)
+    public Source updateSource(@PathVariable Long id, @Valid @RequestBody SourceUpdateForm sourceForm)
                                                                             throws NotFoundException {
         return sourceService.updateSource(id, sourceForm);
     }

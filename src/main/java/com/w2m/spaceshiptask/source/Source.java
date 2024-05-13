@@ -67,4 +67,5 @@ public class Source implements Serializable {
     public void setType(SourceType type) {
         this.type = type;
     }
+
 }
